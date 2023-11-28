@@ -42,7 +42,15 @@ genre_mapping = {
 }
 
 # Charger les DataFrames
-df_ml = pd.read_csv('df_ml.zip', compression='gzip')
+import zipfile
+
+# DataFrame ML
+chemin_zip = 'df_ml.zip'
+# Lisez le fichier CSV directement depuis le fichier ZIP
+with zipfile.ZipFile(chemin_zip, 'r') as zip_ref:
+    with zip_ref.open(zip_ref.namelist()[0]) as file:
+        df_ml = pd.read_csv(file)
+
 df_actors = pd.read_csv("actorsIdAndNames.csv", index_col=0)
 df_actmov = pd.read_csv("actorsInFilmsTable.csv")
 df_all = pd.read_csv("df_frenchComedies2000_all.csv", index_col=0)
