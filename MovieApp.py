@@ -42,7 +42,7 @@ genre_mapping = {
 }
 
 # Charger les DataFrames
-df_ml = pd.read_csv('df_ml.csv')
+df_ml = pd.read_csv('df_ml.csv', compression='gzip')
 df_actors = pd.read_csv("actorsIdAndNames.csv", index_col=0)
 df_actmov = pd.read_csv("actorsInFilmsTable.csv")
 df_all = pd.read_csv("df_frenchComedies2000_all.csv", index_col=0)
