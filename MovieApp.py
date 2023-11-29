@@ -172,22 +172,22 @@ def search_tab_2():
         index_film= df_test.index[df_test['Movie_Title'].str.contains(film)]
 
         distances, indices = modelNN.kneighbors(numerics_variable[index_film])
-        '''nearest_neighbors= element[0][1:]
-        nearest_films= df_test.iloc[nearest_neighbors]
-        nearest_films'''
+        #nearest_neighbors= element[0][1:]
+        #nearest_films= df_test.iloc[nearest_neighbors]
+        #nearest_films'''
                 
-        '''df_without_movie = df_ml[df_ml['Movie_Title'] != film]
-        features_without_movie = df_without_movie.select_dtypes(exclude=['object'])
+        #df_without_movie = df_ml[df_ml['Movie_Title'] != film]
+        #features_without_movie = df_without_movie.select_dtypes(exclude=['object'])
 
         # Initialiser le modèle Nearest Neighbors
-        nn_model = NearestNeighbors(n_neighbors=3, algorithm='ball_tree')
+        #nn_model = NearestNeighbors(n_neighbors=3, algorithm='ball_tree')
 
         # Entraîner le modèle sur le DataFrame sans le film
-        nn_model.fit(features_without_movie)
+        #nn_model.fit(features_without_movie)
 
         # Rechercher les voisins les plus proches pour le film
-        movie_to_query = df_ml[df_ml['Movie_Title'] == film].select_dtypes(exclude=['object'])
-        distances, indices = nn_model.kneighbors(movie_to_query)'''
+        #movie_to_query = df_ml[df_ml['Movie_Title'] == film].select_dtypes(exclude=['object'])
+        #distances, indices = nn_model.kneighbors(movie_to_query)
 
         # Afficher les informations des trois films les plus proches
         for i in range(4):
