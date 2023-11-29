@@ -116,7 +116,7 @@ def search_tab_2():
     
     # Ajoutez ici vos composants de recherche, résultats, etc.
     liste_films = df_test['Movie_Title']
-    search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films)
+    search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films, value= None)
     weight_option = st.selectbox("J'aimerais retrouver:", ['Les réalisateurs', 'Les acteurs', 'Le genre', 'Tout !'])
   
     
