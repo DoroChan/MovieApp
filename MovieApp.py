@@ -115,7 +115,7 @@ def search_tab_2():
     st.title("Recherche de Films")
     
     # Ajoutez ici vos composants de recherche, résultats, etc.
-    liste_films = df_test2_list['Movie_Title']
+    liste_films = df_test['Movie_Title']
     search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films)
     weight_option = st.selectbox("J'aimerais retrouver:", ['Les réalisateurs', 'Les acteurs', 'Le genre', 'Tout !'])
   
@@ -133,32 +133,34 @@ def search_tab_2():
         # factorisation des listes en une seule variable (de liste)
         if weight_option == 'Tout !':
             mlb = MultiLabelBinarizer()
-            genres_binarized= mlb.fit_transform(df_test2_list['Movie_Genres'])*1.5
-            actors_binarized= mlb.fit_transform(df_test2_list['Actors_Name'])*1.1
-            directors_binarized= mlb.fit_transform(df_test2_list['Directors_Name'])*1.3
-            year_np= np.array(df_test2_list['Movie_Year']).reshape(-1, 1)
+            genres_binarized= mlb.fit_transform(df_test['Movie_Genres'])*1.5
+            actors_binarized= mlb.fit_transform(df_test['Actors_Name'])*1.1
+            directors_binarized= mlb.fit_transform(df_test['Directors_Name'])*1.3
+            year_np= np.array(df_test['Movie_Year']).reshape(-1, 1)
 
         if weight_option == 'Les réalisateurs':
             mlb = MultiLabelBinarizer()
-            genres_binarized= mlb.fit_transform(df_test2_list['Movie_Genres'])*1.3
-            actors_binarized= mlb.fit_transform(df_test2_list['Actors_Name'])*1.1
-            directors_binarized= mlb.fit_transform(df_test2_list['Directors_Name'])*1.5
-            year_np= np.array(df_test2_list['Movie_Year']).reshape(-1, 1)
+            genres_binarized= mlb.fit_transform(df_test['Movie_Genres'])*1.3
+            actors_binarized= mlb.fit_transform(df_test['Actors_Name'])*1.1
+            directors_binarized= mlb.fit_transform(df_test['Directors_Name'])*1.5
+            year_np= np.array(df_test['Movie_Year']).reshape(-1, 1)
 
 
         if weight_option == 'Les acteurs':
             mlb = MultiLabelBinarizer()
-            genres_binarized= mlb.fit_transform(df_test2_list['Movie_Genres'])*1.3
-            actors_binarized= mlb.fit_transform(df_test2_list['Actors_Name'])*1.5
-            directors_binarized= mlb.fit_transform(df_test2_list['Directors_Name'])*1.1
-            year_np= np.array(df_test2_list['Movie_Year']).reshape(-1, 1)
+            genres_binarized= mlb.fit_transform(df_test['Movie_Genres'])*1.3
+            actors_binarized= mlb.fit_transform(df_test['Actors_Name'])*1.5
+            directors_binarized= mlb.fit_transform(df_test['Directors_Name'])*1.1
+            year_np= np.array(df_test['Movie_Year']).reshape(-1, 1)
 
         if weight_option == 'Le genre':
             mlb = MultiLabelBinarizer()
-            genres_binarized= mlb.fit_transform(df_test2_list['Movie_Genres'])*1.7
-            actors_binarized= mlb.fit_transform(df_test2_list['Actors_Name'])*1.2
-            directors_binarized= mlb.fit_transform(df_test2_list['Directors_Name'])*1.2
-            year_np= np.array(df_test2_list['Movie_Year']).reshape(-1, 1)
+            genres_binarized= mlb.fit_transform(df_test['Movie_Genres'])*1.7
+            actors_binarized= mlb.fit_transform(df_test['Actors_Name'])*1.2
+            directors_binarized= mlb.fit_transform(df_test['Directors_Name'])*1.2
+            year_np= np.array(df_test['Movie_Year']).reshape(-1, 1)
+
+        
         
         '''df_without_movie = df_ml[df_ml['Movie_Title'] != film]
         features_without_movie = df_without_movie.select_dtypes(exclude=['object'])
