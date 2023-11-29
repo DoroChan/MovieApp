@@ -166,7 +166,7 @@ def search_tab_2():
         from sklearn.neighbors import NearestNeighbors
         from sklearn.metrics.pairwise import cosine_similarity
         X = numerics_variable
-        modelNN = NearestNeighbors(n_neighbors = 3, metric='cosine', algorithm='brute')
+        modelNN = NearestNeighbors(n_neighbors = 4, metric='cosine', algorithm='brute')
         modelNN.fit(X)
 
         index_film= df_test.index[df_test['Movie_Title'].str.contains(film)]
@@ -191,7 +191,7 @@ def search_tab_2():
 
         # Afficher les informations des trois films les plus proches
         for i in range(4):
-            nearest_movie_index = indices[0][i]
+            nearest_movie_index = indices[0][i+1]
             nearest_movie = df_test.iloc[nearest_movie_index]
 
             # Obtenir l'ID IMDb du film
