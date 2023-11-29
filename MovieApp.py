@@ -160,8 +160,22 @@ def search_tab_2():
             directors_binarized= mlb.fit_transform(df_test['Directors_Name'])*1.2
             year_np= np.array(df_test['Movie_Year']).reshape(-1, 1)
 
-        
-        
+        numerics_variable = np.hstack((genres_binarized, actors_binarized, directors_binarized, year_np))
+
+        # initialiser et entrainer modèle de nearest neighbors
+        from sklearn.neighbors import NearestNeighbors
+        from sklearn.metrics.pairwise import cosine_similarity
+        X = numerics_variable
+        modelNN = NearestNeighbors(n_neighbors = 3, metric='cosine', algorithm='brute')
+        modelNN.fit(X)
+
+        index_film= df_test.index[df_test['Movie_Title'].str.contains(film)]
+
+        distances, indices = modelNN.kneighbors(numerics_variable[index_film])
+        '''nearest_neighbors= element[0][1:]
+        nearest_films= df_test.iloc[nearest_neighbors]
+        nearest_films'''
+                
         '''df_without_movie = df_ml[df_ml['Movie_Title'] != film]
         features_without_movie = df_without_movie.select_dtypes(exclude=['object'])
 
@@ -176,8 +190,8 @@ def search_tab_2():
         distances, indices = nn_model.kneighbors(movie_to_query)'''
 
         # Afficher les informations des trois films les plus proches
-        for i in range(3):
-            nearest_movie_index = indices[0][i]
+        for i in range(4):
+            nearest_movie_index = indices[0][i+1]
             nearest_movie = df_without_movie.iloc[nearest_movie_index]
 
             # Obtenir l'ID IMDb du film
