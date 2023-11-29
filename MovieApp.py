@@ -192,7 +192,7 @@ def search_tab_2():
         # Afficher les informations des trois films les plus proches
         for i in range(4):
             nearest_movie_index = indices[0][i+1]
-            nearest_movie = df_without_movie.iloc[nearest_movie_index]
+            nearest_movie = df_test.iloc[nearest_movie_index]
 
             # Obtenir l'ID IMDb du film
             imdb_id = nearest_movie['ID']
