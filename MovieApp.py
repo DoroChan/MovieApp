@@ -190,7 +190,7 @@ def search_tab_2():
         #distances, indices = nn_model.kneighbors(movie_to_query)
 
         # Afficher les informations des trois films les plus proches
-        for i in range(len(modelNN)):
+        for i in range(4):
             nearest_movie_index = indices[0][i+1]
             nearest_movie = df_test.iloc[nearest_movie_index]
 
