@@ -115,7 +115,8 @@ def search_tab_2():
     st.title("Recherche de Films")
     
     # Ajoutez ici vos composants de recherche, résultats, etc.
-    search_query = st.selectbox("Rechercher un film:", df_ml['Movie_Title'])
+    search_query = st.selectbox("J'aimerais voir un film similaire à:", df_ml['Movie_Title'])
+    weight_option = st.selectbox("J'aimerais retrouver:", ['les réalisateurs', 'les acteurs', 'le genre', 'tout !']
     if st.button("Rechercher"):
         # Logique de recherche et affichage des résultats
         st.write(f"Résultats de la recherche pour: {search_query}")
