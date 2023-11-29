@@ -116,8 +116,8 @@ def search_tab_2():
     
     # Ajoutez ici vos composants de recherche, résultats, etc.
     liste_films = df_test['Movie_Title']
-    search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films, index=None, placeholder="Saisissez le titre d'un film que vous acez aimé")
-    weight_option = st.selectbox("J'aimerais retrouver:", ['Les réalisateurs', 'Les acteurs', 'Le genre', 'Tout !'])
+    search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films, index=None, placeholder="Saisissez le titre d'un film que vous avez aimé")
+    weight_option = st.selectbox("J'aimerais essentiellement retrouver:", ['Les réalisateurs', 'Les acteurs', 'Le genre', 'Un peu tout !'])
   
     
     if st.button("Rechercher"):
@@ -131,7 +131,7 @@ def search_tab_2():
         import numpy as np
 
         # factorisation des listes en une seule variable (de liste)
-        if weight_option == 'Tout !':
+        if weight_option == 'Un peu tout !':
             mlb = MultiLabelBinarizer()
             genres_binarized= mlb.fit_transform(df_test['Movie_Genres'])*1.5
             actors_binarized= mlb.fit_transform(df_test['Actors_Name'])*1.1
