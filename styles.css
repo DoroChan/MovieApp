@@ -1,0 +1,10 @@
+/* Style for film titles */
+.stContainer .stTitle {
+    font-size: 18px; /* Set your desired font size here */
+}
+
+/* Style for film containers */
+.stContainer {
+    max-width: 300px; /* Set your desired width here */
+    word-wrap: break-word;
+}
