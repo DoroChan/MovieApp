@@ -6,6 +6,8 @@ from translate import Translator
 
 # Set Streamlit to wide mode
 st.set_page_config(layout="wide")
+config = toml.load('config.toml')
+
 
 # Link the CSS file
 st.markdown(
