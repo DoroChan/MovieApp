@@ -9,6 +9,7 @@ import toml
 # Set Streamlit to wide mode
 st.set_page_config(layout="wide")
 config = toml.load('config.toml')
+theme_config = config.get('theme', {})
 st.set_page_config()
 
 # Link the CSS file
