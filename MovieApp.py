@@ -3,11 +3,13 @@ import pandas as pd
 import requests
 from sklearn.neighbors import NearestNeighbors
 from translate import Translator
+import toml
+
 
 # Set Streamlit to wide mode
 st.set_page_config(layout="wide")
 config = toml.load('config.toml')
-
+st.set_page_config()
 
 # Link the CSS file
 st.markdown(
