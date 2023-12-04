@@ -52,7 +52,7 @@ genre_mapping = {
     '37': 'Western'
 }
 
-st.title("Recherche de Films")
+st.markdown("<h1 style='color:#FF5757;'>Recherche de Films</h1>", unsafe_allow_html=True)
     
     # Ajoutez ici vos composants de recherche, résultats, etc.
 liste_films = df_test['Movie_Title']
