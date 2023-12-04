@@ -13,11 +13,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
 df_test = pd.read_csv("df_test2_list.csv")
 
 # Image de fond
-st.image('MovieApp.svg')
+st.image('MovieApp2.svg')
 
 # Api tmdb - clef
 url = "https://api.themoviedb.org/3/authentication"
@@ -59,13 +58,55 @@ liste_films = df_test['Movie_Title']
 search_query = st.selectbox("J'aimerais voir un film similaire à:", liste_films, index=None, placeholder="Saisissez le titre d'un film que vous avez aimé")
 weight_option = st.selectbox("J'aimerais essentiellement retrouver:", ['Les réalisateurs', 'Les acteurs', 'Le genre', 'Un peu tout !'])
   
-    
+# Initialiser le traducteur une seule fois en dehors de la boucle
+translator_similar = Translator(to_lang='fr')
+
 if st.button("Rechercher"):
     # Logique de recherche et affichage des résultats
     st.write(f"Résultats de la recherche pour: {search_query}")
 
     # Utiliser le film choisi comme variable
     film = search_query
+
+        # Get the IMDb ID of the selected movie
+    selected_movie_index = df_test.index[df_test['Movie_Title'] == film].tolist()
+
+    if selected_movie_index:
+        selected_movie_index = selected_movie_index[0]
+        selected_movie = df_test.iloc[selected_movie_index]
+        imdb_id_selected = selected_movie['ID']
+
+        # Call the TMDB API to get information about the selected movie
+        tmdb_url_selected = f"https://api.themoviedb.org/3/find/{imdb_id_selected}?external_source=imdb_id"
+        tmdb_response_selected = requests.get(tmdb_url_selected, headers=headers)
+
+        col1_selected, col2_selected, col3_selected= st.columns([2, 1, 4])
+
+
+        if tmdb_response_selected.status_code == 200:
+            tmdb_data_selected = tmdb_response_selected.json()
+            selected_movie_data = tmdb_data_selected['movie_results'][0]
+
+            # Translate the overview from English to French
+            english_summary_selected = selected_movie_data['overview']
+            chunk_size_selected = 400
+            chunks_selected = [english_summary_selected[i:i + chunk_size_selected] for i in range(0, len(english_summary_selected), chunk_size_selected)]
+            french_summary_selected = " ".join(translator_similar.translate(chunk) for chunk in chunks_selected)
+
+            with col1_selected:
+            # Display details of the selected movie
+                st.image(f"https://image.tmdb.org/t/p/w500/{selected_movie_data['poster_path']}", use_column_width=True)
+                st.title(f"{selected_movie['Movie_Title']}")
+                st.markdown(f"<span style='color:#FF5757'>Date de sortie:</span> {selected_movie_data['release_date']}", unsafe_allow_html=True)
+                genre_ids_selected = selected_movie_data['genre_ids']
+                genre_names_selected = [genre_mapping.get(str(genre_id), '') for genre_id in genre_ids_selected]
+                st.markdown(f"<span style='color:#FF5757'>Genres:</span> {', '.join(genre_names_selected)}", unsafe_allow_html=True)
+                st.markdown(f"<span style='color:#FF5757'>Note moyenne:</span> {selected_movie_data['vote_average']}", unsafe_allow_html=True)
+                st.markdown(f"<span style='color:#FF5757'>Popularité:</span> {selected_movie_data['popularity']}", unsafe_allow_html=True)
+                st.write(f"{french_summary_selected}")
+
+        else:
+            st.warning(f"Impossible de récupérer les informations du film sélectionné à partir de l'API TMDB.")
     
     from sklearn.preprocessing import MultiLabelBinarizer
     import numpy as np
@@ -111,17 +152,11 @@ if st.button("Rechercher"):
     index_film = df_test.index[df_test['Movie_Title'].str.contains(film)]
 
     distances, indices = modelNN.kneighbors(numerics_variable[index_film])
-            
-    st.title("Films Similaires :")
-
-    # Initialiser le traducteur une seule fois en dehors de la boucle
-    translator_similar = Translator(to_lang='fr')
-
     # Boucle pour afficher les films similaires
     for i in range(3):
         similar_movie_index = indices[0][i+1]
         similar_movie = df_test.iloc[similar_movie_index]
-
+        
         # Obtenir l'ID IMDb du film similaire
         imdb_id_similar = similar_movie['ID']
 
@@ -143,20 +178,21 @@ if st.button("Rechercher"):
             french_summary_similar = " ".join(translator_similar.translate(chunk) for chunk in chunks_similar)
 
             # Display title, image, and details in a single column
-            col1_similar, col2_similar = st.columns([1, 2])
 
-            with col1_similar:
-                st.image(f"https://image.tmdb.org/t/p/w500/{tmdb_data_similar['movie_results'][0]['poster_path']}", use_column_width=True)
+            with col3_selected:
+                col_1, col_2 = st.columns([1, 1])
+                with col_1:
+                    st.image(f"https://image.tmdb.org/t/p/w500/{tmdb_data_similar['movie_results'][0]['poster_path']}", use_column_width=True)
 
-            with col2_similar:
-                st.title(f"{similar_movie['Movie_Title']}")
-                st.markdown(f"<span style='color:#FF5757'>Date de sortie:</span> {tmdb_data_similar['movie_results'][0]['release_date']}", unsafe_allow_html=True)
-                genre_ids_similar = tmdb_data_similar['movie_results'][0]['genre_ids']
-                genre_names_similar = [genre_mapping.get(str(genre_id), '') for genre_id in genre_ids_similar]
-                st.markdown(f"<span style='color:#FF5757'>Genres:</span> {', '.join(genre_names_similar)}", unsafe_allow_html=True)
-                st.markdown(f"<span style='color:#FF5757'>Note moyenne:</span> {tmdb_data_similar['movie_results'][0]['vote_average']}", unsafe_allow_html=True)
-                st.markdown(f"<span style='color:#FF5757'>Popularité:</span> {tmdb_data_similar['movie_results'][0]['popularity']}", unsafe_allow_html=True)
-                st.write(f"{french_summary_similar}")
+                with col_2:
+                    st.title(f"{similar_movie['Movie_Title']}")
+                    st.markdown(f"<span style='color:#FF5757'>Date de sortie:</span> {tmdb_data_similar['movie_results'][0]['release_date']}", unsafe_allow_html=True)
+                    genre_ids_similar = tmdb_data_similar['movie_results'][0]['genre_ids']
+                    genre_names_similar = [genre_mapping.get(str(genre_id), '') for genre_id in genre_ids_similar]
+                    st.markdown(f"<span style='color:#FF5757'>Genres:</span> {', '.join(genre_names_similar)}", unsafe_allow_html=True)
+                    st.markdown(f"<span style='color:#FF5757'>Note moyenne:</span> {tmdb_data_similar['movie_results'][0]['vote_average']}", unsafe_allow_html=True)
+                    st.markdown(f"<span style='color:#FF5757'>Popularité:</span> {tmdb_data_similar['movie_results'][0]['popularity']}", unsafe_allow_html=True)
+                    st.write(f"{french_summary_similar}")
 
         else:
             st.warning(f"Impossible de récupérer les informations du film similaire {similar_movie['Movie_Title']} à partir de l'API TMDB.")
