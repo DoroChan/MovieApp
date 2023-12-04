@@ -63,9 +63,6 @@ weight_option = st.selectbox("J'aimerais essentiellement retrouver:", ['Les réa
 translator_similar = Translator(to_lang='fr')
 
 if st.button("Rechercher"):
-    # Logique de recherche et affichage des résultats
-    st.write(f"Résultats de la recherche pour: {search_query}")
-
     # Utiliser le film choisi comme variable
     film = search_query
 
